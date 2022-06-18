@@ -1,6 +1,5 @@
 package com.raven.form;
 
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
@@ -15,30 +14,29 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.Random;
 import javax.swing.ButtonGroup;
+import javax.swing.JOptionPane;
 
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.AbstractBorder;
-
+import javax.swing.table.DefaultTableModel;
 
 public class Form_Home extends javax.swing.JPanel {
 
     public Form_Home() {
         initComponents();
-     
-       
+
         JPanel p = new JPanel();
         p.setBackground(Color.WHITE);
 
-      //customTextfield.
-     ButtonGroup group = new ButtonGroup();
-     group.add(checkbox1);
-     group.add(checkbox2);
-     group.add(checkbox3);
+        //customTextfield.
+        ButtonGroup group = new ButtonGroup();
+        group.add(checkbox1);
+        group.add(checkbox2);
+        group.add(checkbox3);
 
     }
-  
- 
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -141,7 +139,7 @@ public class Form_Home extends javax.swing.JPanel {
                         .addGap(94, 94, 94)
                         .addComponent(jLabel1))
                     .addGroup(panelBorder1Layout.createSequentialGroup()
-                        .addGap(259, 259, 259)
+                        .addGap(265, 265, 265)
                         .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(UserNameField1, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(WebSiteField, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -159,7 +157,7 @@ public class Form_Home extends javax.swing.JPanel {
                                 .addGap(28, 28, 28)
                                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel3))))
-                .addContainerGap(301, Short.MAX_VALUE))
+                .addContainerGap(298, Short.MAX_VALUE))
         );
         panelBorder1Layout.setVerticalGroup(
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -187,7 +185,7 @@ public class Form_Home extends javax.swing.JPanel {
                 .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(509, Short.MAX_VALUE))
+                .addContainerGap(185, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -196,7 +194,7 @@ public class Form_Home extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, 856, Short.MAX_VALUE)
+                .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, 859, Short.MAX_VALUE)
                 .addGap(20, 20, 20))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelBorder1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -222,12 +220,12 @@ public class Form_Home extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-      if (checkbox1.isSelected()) {
-        passGenerator (8);
-        }else if(checkbox2.isSelected()){
-             passGenerator (12);
-        }else if(checkbox3.isSelected()){
-             passGenerator (6);
+        if (checkbox1.isSelected()) {
+            passGenerator(8);
+        } else if (checkbox2.isSelected()) {
+            passGenerator(12);
+        } else if (checkbox3.isSelected()) {
+            passGenerator(6);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -241,8 +239,25 @@ public class Form_Home extends javax.swing.JPanel {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        dialogue d=new dialogue();
-        d.main(null);
+        String name = UserNameField1.getText();
+        String website = WebSiteField.getText();
+        String password = PasswordTextField.getText();
+        if (name.isEmpty() || website.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Please enter all fields",
+                    "Try again",
+                    JOptionPane.ERROR_MESSAGE);
+        } else {
+            Form_1.AddRowToJTable(new Object[]{
+                name,
+                website,
+                password,});    
+
+            UserNameField1.setText("");
+            WebSiteField.setText("");
+            PasswordTextField.setText("");
+        }
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void WebSiteFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WebSiteFieldActionPerformed
@@ -252,16 +267,16 @@ public class Form_Home extends javax.swing.JPanel {
     private void UserNameField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UserNameField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_UserNameField1ActionPerformed
-public void passGenerator(int n){
-     int len=n;
-        String validChar="a1b2n3m4,5l6k6j7h5g8f9d01s2are5qy26384jehdhdhhsjs.;'e[3jd[7ds77f;5;0;-=;l'vlnvknkrbbrhbfkfuo21hh4o1j45bk";
-        StringBuilder st =new StringBuilder();
-        Random rand = new Random ();
-        while (0<len--) {
-            st.append(validChar.charAt (rand.nextInt (validChar.length())));
-                }
+    public void passGenerator(int n) {
+        int len = n;
+        String validChar = "a1b2n3m4,5l6k6j7h5g8f9d01s2are5qy26384jehdhdhhsjs.;'e[3jd[7ds77f;5;0;-=;l'vlnvknkrbbrhbfkfuo21hh4o1j45bk";
+        StringBuilder st = new StringBuilder();
+        Random rand = new Random();
+        while (0 < len--) {
+            st.append(validChar.charAt(rand.nextInt(validChar.length())));
+        }
         PasswordTextField.setText(st.toString());
-}
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -280,6 +295,5 @@ public void passGenerator(int n){
     private javax.swing.JLayeredPane panel;
     private com.raven.swing.PanelBorder panelBorder1;
     // End of variables declaration//GEN-END:variables
-    
-}
 
+}
