@@ -12,7 +12,12 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Random;
+import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
 import javax.swing.JOptionPane;
 
@@ -139,7 +144,7 @@ public class Form_Home extends javax.swing.JPanel {
                         .addGap(94, 94, 94)
                         .addComponent(jLabel1))
                     .addGroup(panelBorder1Layout.createSequentialGroup()
-                        .addGap(265, 265, 265)
+                        .addGap(292, 292, 292)
                         .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(UserNameField1, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(WebSiteField, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -157,7 +162,7 @@ public class Form_Home extends javax.swing.JPanel {
                                 .addGap(28, 28, 28)
                                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel3))))
-                .addContainerGap(298, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelBorder1Layout.setVerticalGroup(
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -185,7 +190,7 @@ public class Form_Home extends javax.swing.JPanel {
                 .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(185, Short.MAX_VALUE))
+                .addContainerGap(252, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -194,7 +199,7 @@ public class Form_Home extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, 859, Short.MAX_VALUE)
+                .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, 873, Short.MAX_VALUE)
                 .addGap(20, 20, 20))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelBorder1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -256,6 +261,31 @@ public class Form_Home extends javax.swing.JPanel {
             UserNameField1.setText("");
             WebSiteField.setText("");
             PasswordTextField.setText("");
+            
+                 File file = new File("C:\\Users\\DELL\\Pictures\\PASSWORD_DB.txt");
+                //if the file not exist create one
+                    try {
+                        if(!file.exists()){
+                            file.createNewFile();
+                        }
+                   FileWriter fw = new FileWriter(file);
+                  BufferedWriter bw = new BufferedWriter(fw);
+            
+               for(int i = 0; i < Form_1.SavedPasswordTable.getRowCount(); i++){//rows
+                    for(int j = 0; j < Form_1.SavedPasswordTable.getColumnCount(); j++){//columns
+                    bw.write(Form_1.SavedPasswordTable.getValueAt(i, j).toString()+" ");
+                }
+                bw.newLine();
+            }
+            
+            bw.close();
+            fw.close();
+                           JOptionPane.showMessageDialog(null, "Data Exported");
+
+        } catch (IOException ex) {
+                        ex.printStackTrace();        }
+        
+                     
         }
 
     }//GEN-LAST:event_jButton2ActionPerformed

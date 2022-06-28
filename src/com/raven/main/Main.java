@@ -11,7 +11,12 @@ import com.raven.form.Form_2;
 import com.raven.form.Form_3;
 import com.raven.form.Form_Home;
 import java.awt.Color;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import javax.swing.JComponent;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -44,6 +49,7 @@ public class Main extends javax.swing.JFrame {
                     setForm(form1);
                 } else if (index == 2) {
                     setForm(form2);
+                    
                 } else if (index == 3) {
                     setForm(form3);
                 }
