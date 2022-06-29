@@ -16,8 +16,19 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.Random;
 import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.SecretKeySpec;
 import javax.swing.ButtonGroup;
 import javax.swing.JOptionPane;
 
@@ -25,6 +36,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.AbstractBorder;
 import javax.swing.table.DefaultTableModel;
+import static jdk.internal.org.jline.keymap.KeyMap.key;
 
 public class Form_Home extends javax.swing.JPanel {
 
@@ -69,12 +81,6 @@ public class Form_Home extends javax.swing.JPanel {
         jLabel1.setForeground(new java.awt.Color(127, 127, 127));
         jLabel1.setText("Create Passwords");
 
-        PasswordTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PasswordTextFieldActionPerformed(evt);
-            }
-        });
-
         checkbox1.setText("8 Characters");
         checkbox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -107,12 +113,6 @@ public class Form_Home extends javax.swing.JPanel {
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
-            }
-        });
-
-        WebSiteField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                WebSiteFieldActionPerformed(evt);
             }
         });
 
@@ -162,7 +162,7 @@ public class Form_Home extends javax.swing.JPanel {
                                 .addGap(28, 28, 28)
                                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel3))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(294, Short.MAX_VALUE))
         );
         panelBorder1Layout.setVerticalGroup(
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -199,7 +199,7 @@ public class Form_Home extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, 873, Short.MAX_VALUE)
+                .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, 882, Short.MAX_VALUE)
                 .addGap(20, 20, 20))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelBorder1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -237,11 +237,22 @@ public class Form_Home extends javax.swing.JPanel {
     private void checkbox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkbox3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_checkbox3ActionPerformed
-
-    private void PasswordTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasswordTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_PasswordTextFieldActionPerformed
-
+    private static SecretKeySpec secretKey;
+    private static byte[] key;
+    public static void setKey(String myKey)
+    {
+        MessageDigest sha = null;
+        try {
+            key = myKey.getBytes("UTF-8");
+            sha = MessageDigest.getInstance("SHA-1");
+            key = sha.digest(key);
+            key = Arrays.copyOf(key, 16);
+            secretKey = new SecretKeySpec(key, "AES");
+        }
+        catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         String name = UserNameField1.getText();
@@ -253,46 +264,59 @@ public class Form_Home extends javax.swing.JPanel {
                     "Try again",
                     JOptionPane.ERROR_MESSAGE);
         } else {
+             try{
+            String strToEncrypt;
+        String secret;
+         strToEncrypt=password;
+            secret="pavel";
+            setKey(secret);
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+            password=Base64.getEncoder().encodeToString(cipher.doFinal(strToEncrypt.getBytes("UTF-8")));
             Form_1.AddRowToJTable(new Object[]{
                 name,
                 website,
-                password,});    
+                password,
+                "Click on decrypt"
+            });    
 
             UserNameField1.setText("");
             WebSiteField.setText("");
             PasswordTextField.setText("");
-            
-                 File file = new File("C:\\Users\\DELL\\Pictures\\PASSWORD_DB.txt");
-                //if the file not exist create one
-                    try {
-                        if(!file.exists()){
-                            file.createNewFile();
-                        }
-                   FileWriter fw = new FileWriter(file);
-                  BufferedWriter bw = new BufferedWriter(fw);
-            
-               for(int i = 0; i < Form_1.SavedPasswordTable.getRowCount(); i++){//rows
-                    for(int j = 0; j < Form_1.SavedPasswordTable.getColumnCount(); j++){//columns
-                    bw.write(Form_1.SavedPasswordTable.getValueAt(i, j).toString()+" ");
+            File file = new File("C:\\Users\\DELL\\Pictures\\PASSWORD_DB.txt");
+            //if the file not exist create one
+            try {
+                if(!file.exists()){
+                    file.createNewFile();
                 }
-                bw.newLine();
-            }
-            
-            bw.close();
-            fw.close();
-                           JOptionPane.showMessageDialog(null, "Data Exported");
+                FileWriter fw = new FileWriter(file);
+                BufferedWriter bw = new BufferedWriter(fw);
+                
+                for(int i = 0; i < Form_1.SavedPasswordTable.getRowCount(); i++){//rows
+                    for(int j = 0; j < Form_1.SavedPasswordTable.getColumnCount(); j++){//columns
+                        bw.write(Form_1.SavedPasswordTable.getValueAt(i, j).toString()+" ");
+                    }
+                    bw.newLine();
+                }
 
-        } catch (IOException ex) {
-                        ex.printStackTrace();        }
+                bw.close();
+                fw.close();
+                JOptionPane.showMessageDialog(null, "Data Exported");
+            }catch(Exception e){
+                
+                
+                
+                
+            }
+            }
+            catch(Exception e){
+                
+            }
         
                      
+        
         }
-
     }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void WebSiteFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WebSiteFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_WebSiteFieldActionPerformed
 
     private void UserNameField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UserNameField1ActionPerformed
         // TODO add your handling code here:
