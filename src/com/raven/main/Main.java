@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -31,7 +32,8 @@ public class Main extends javax.swing.JFrame {
     private Form_1 form1;
     private Form_2 form2;
     private Form_3 form3;
-
+Object[] options = {"Exit",
+                    "Cancel",};
     public Main() {
         initComponents();
         setBackground(new Color(0, 0, 0, 0));
@@ -51,8 +53,11 @@ public class Main extends javax.swing.JFrame {
                     setForm(form2);
                     
                 } else if (index == 3) {
-                    setForm(form3);
-                }
+                 int response=  JOptionPane.showConfirmDialog(null,"Do you want to exit ?","Exit",JOptionPane.YES_NO_CANCEL_OPTION);
+                    if(response==JOptionPane.YES_OPTION){
+                        System.exit(0);
+                    }
+                }   
             }
         });
         //  set when system open start with home form

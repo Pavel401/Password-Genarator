@@ -141,7 +141,6 @@ public class Form_1 extends javax.swing.JPanel {
             }
             
             counter=1;
-            
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -155,6 +154,7 @@ public class Form_1 extends javax.swing.JPanel {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+      
     }//GEN-LAST:event_jButton2ActionPerformed
  public static void AddRowToJTable(Object[] dataRow)
     {
