@@ -13,3 +13,230 @@
         </data>
     </configuration>
 </project>
+https://bit.ly/3OBprEI
+
+
+///////////////////////////////////////////
+
+
+8.Write a program to demonstrate use of extending interfaces
+
+interface Printable
+{
+void print();
+}
+interface Showable extends Printable
+{
+void show();
+}
+public class ExtIntfMain implements Showable
+{
+public static void main(String[] args)
+{
+ExtIntfMain obj = new ExtIntfMain();
+obj.print();
+obj.show();
+}
+public void print()
+{
+System.out.println("Hello");
+}
+public void show()
+{
+System.out.println("Welcome");
+}
+}
+
+
+11.Write a program to implement the concept of threading by implementing Runnable
+Interface
+
+import java.lang.Thread;
+class ImplementingRunnableThread implements Runnable
+{
+Thread t;
+int i;
+String s[]={"Welcome","to","Java","Programming","Language"};
+ImplementingRunnableThread()
+{
+t=new Thread(this,"Runnable Interface Thread");
+System.out.println("Thread is:"+t);
+t.start();
+}29
+public void run()
+{
+String name=t.getName();
+for(int i=0;i<s.length;++i)
+{
+try
+{
+Thread.sleep(500);
+}
+catch(Exception e)
+{
+}
+System.out.println(name+":"+s[i]);
+}
+}
+}
+public class RunnableInterfaceExample
+{
+public static void main(String args[])
+{
+new ImplementingRunnableThread();
+}
+
+
+
+13.Write a program to implement the concept of Exception Handling using predefined
+exception
+
+
+//package myPackage;
+import java.lang.*;
+class PreDefinedExceptionDemo{
+public static void main(String argv[])
+{
+int a=10,b=5,c=5,x,y; try
+{
+x=a/(b-c);
+}
+catch(ArithmeticException e)
+{
+System.out.println("DIVISION BY ZERO");
+}
+y=a/(b+c);
+System.out.println("y="+y);
+}
+}
+
+
+
+14.Write a program to implement the concept of Exception Handling by creating user
+defined exceptions
+
+
+package sample1;
+import java.io.DataInputStream;
+class MyException extends Exception {
+MyException(String message) {
+super(message);
+}
+}
+class UserDefinedExceptionDemo {
+public static void main(String a[]) {
+int age;
+DataInputStream ds = new DataInputStream(System.in);
+try {
+System.out.println("Enter the age (above 15 and below 25) :");
+age = Integer.parseInt(ds.readLine());
+if (age < 15 || age > 25) {
+throw new MyException("Number not in range");
+}
+System.out.println(" the number is :" + age);
+}
+catch (MyException e) {
+System.out.println("Caught MyException");
+System.out.println(e.getMessage());
+} catch (Exception e) {
+System.out.println(e);
+}
+}
+}
+
+
+
+15.Write a program to demonstrate File I/O Operations
+
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+public class copyfile {33
+public static void main(String[] args) {
+FileInputStream instream = null;
+FileOutputStream outstream = null;
+try {
+File infile = new File("F:\\NHCE\\filein.txt");
+File outfile = new File("F:\\NHCE\\fileout.txt");
+instream = new FileInputStream(infile);
+outstream = new FileOutputStream(outfile);
+byte[] buffer = new byte[1024];
+int length;
+while ((length = instream.read(buffer)) > 0) {
+outstream.write(buffer, 0, length);
+}
+instream.close();
+outstream.close();
+System.out.println("File copied successfully!!");
+} catch (IOException ioe) {
+ioe.printStackTrace();
+}
+}
+}
+
+
+
+PROGRAM NO.: 16
+Write a program to demonstrate ArrayList Class, LinkedList Class,
+TreeSet Class.
+
+
+import java.util.*;
+public class Main {
+public static void main(String args[]){
+ArrayList<String>al = new ArrayList<String>();
+System.out.println("\nArray List");
+System.out.println("Initial size of al: " + al.size()); //1
+al.add("A"); //2
+al.add("B");
+al.add("C");
+al.add("D");
+al.add(2, "A2");
+al.remove("A"); //3
+System.out.println("Element at index 3 is: "+ al.get(2)); //4
+System.out.println("Is ArrayList empty? :"+ al.isEmpty()); //5
+System.out.println("Index of A2 in ArrayList is: " + al.indexOf("A2")); //6
+System.out.println("Does ArrayList contain G? :"+ al.contains("G")); //7
+al.set(2, "Rahul"); //8
+al.trimToSize(); //9
+al.toArray(); //10
+System.out.println("Content: "+ al);
+LinkedList<String>ll = new LinkedList<String>();
+System.out.println("\nLinked List");
+ll.add("A"); //1
+ll.add("B");
+ll.add("C");
+ll.add("D");
+ll.add("E");
+ll.addLast("Z"); //2
+ll.addFirst("A"); //3
+ll.remove("F"); //4
+ll.removeFirst(); //5
+ll.removeLast(); //6
+System.out.println("Element at index 3 is: "+ ll.get(2)); //7
+ll.set(2, " Rahul"); //8Course Code: 19CSL46
+Page No: 35
+System.out.println("Index of A2 in LL is: " + ll.indexOf("C")); //9
+System.out.println("Size of LL: " + ll.size()); //10
+TreeSet<String>ts = new TreeSet<String>();
+System.out.println("\nTree Set");
+ts.add("A"); //1
+ts.add("B");
+ts.add("C");
+ts.add("D");
+ts.add("E");
+ts.add("F");
+System.out.println(ts.subSet("B", "E")); //2
+System.out.println(ts.ceiling("C")); //3
+System.out.println(ts.lower("C")); //4
+System.out.println(ts.higher("D")); //5
+System.out.println(ts.pollFirst()); //6
+System.out.println(ts.pollLast()); //7
+System.out.println("Does TreeList contain G? :"+ ts.contains("G")); //8
+System.out.println("Is TreeList empty? :"+ ts.isEmpty()); //9
+System.out.println("Size :"+ ts.size()); //10
+}
+}
+
